@@ -106,6 +106,8 @@
             flex-grow: 1;
             justify-content: center;
             align-items: center;
+            caret-color: transparent;
+            cursor: default;
 
             font-size: 56px;
             color: white;
@@ -167,8 +169,8 @@
         return
       }
       case "ArrowLeft": {
-        if (pos > 1) {
-          pos = 0
+        if (pos > 0) {
+          pos = pos - 1
           currentWord.innerText = words[pos]
         }
         return
