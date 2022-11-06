@@ -82,7 +82,7 @@ export class MainApp extends LitElement {
 ${this.text}</textarea
         >
         <div class="control-panel">
-          <button class="start-btn" @click="${this.enterReadMode}">
+          <button class="generic-btn generic-btn--start" @click="${this.enterReadMode}">
             START
           </button>
         </div>
@@ -143,13 +143,13 @@ export class TextStepper extends LitElement {
         ${this.words[this.currentWord]}
       </div>
       <button
-        style="position:absolute;top:0;right:0"
+        class="generic-btn generic-btn--escape"
         @click=${() => {
           this.currentWord = 0;
           this.enterInputMode();
         }}
       >
-        close
+        X
       </button>`;
   }
 }
