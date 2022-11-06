@@ -49,7 +49,11 @@ export class MainApp extends LitElement {
       }
       this.mode = this.mode === Mode.INPUT ? Mode.READ : Mode.INPUT;
     };
-    this.enterInputMode = () => (this.mode = Mode.INPUT);
+
+    this.enterInputMode = () => {
+      this.currentWord = 0;
+      this.mode = Mode.INPUT;
+    };
   }
 
   // do not use shadow dom, because we want to use regular css
@@ -61,8 +65,7 @@ export class MainApp extends LitElement {
     if (this.mode === Mode.READ) {
       return html`
         <text-stepper
-          .words=${textToWords(this.text)}
-          .currentWord=${this.currentWord}
+          .currentWord=${textToWords(this.text)[this.currentWord]}
           .nextWord=${this.nextWord}
           .prevWord=${this.prevWord}
           .enterInputMode=${this.enterInputMode}
@@ -82,7 +85,10 @@ export class MainApp extends LitElement {
 ${this.text}</textarea
         >
         <div class="control-panel">
-          <button class="generic-btn generic-btn--start" @click="${this.enterReadMode}">
+          <button
+            class="generic-btn generic-btn--start"
+            @click="${this.enterReadMode}"
+          >
             START
           </button>
         </div>
@@ -93,8 +99,7 @@ customElements.define("main-app", MainApp);
 
 export class TextStepper extends LitElement {
   static properties = {
-    words: { type: Array },
-    currentWord: { type: Number },
+    currentWord: { type: String },
     nextWord: { type: Function },
     prevWord: { type: Function },
     enterInputMode: { type: Function },
@@ -115,12 +120,12 @@ export class TextStepper extends LitElement {
         tabindex="0"
         class="current-word"
         @click=${(ev) => {
-            if (ev.x > 2/3 * window.innerWidth) {
-                this.nextWord()
-            }
-            if (ev.x < 1/3 * window.innerWidth) {
-                this.prevWord()
-            }
+          if (ev.x > (2 / 3) * window.innerWidth) {
+            this.nextWord();
+          }
+          if (ev.x < (1 / 3) * window.innerWidth) {
+            this.prevWord();
+          }
         }}
         @keydown=${(ev) => {
           switch (ev.key) {
@@ -133,19 +138,17 @@ export class TextStepper extends LitElement {
               return;
             }
             case "Escape": {
-              this.currentWord = 0;
               this.enterInputMode();
               return;
             }
           }
         }}
       >
-        ${this.words[this.currentWord]}
+        ${this.currentWord}
       </div>
       <button
         class="generic-btn generic-btn--escape"
         @click=${() => {
-          this.currentWord = 0;
           this.enterInputMode();
         }}
       >
