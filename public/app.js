@@ -11,12 +11,22 @@ const Mode = {
 const sampleText =
   "This is a sample text.\nYou can use it for testing textstepper\nor replace it with your own text!";
 
-const textToWords = (txt) => txt.split(/[ \n]/).filter(Boolean);
+const textToWords = (txt, options) => {
+  const words = txt.split(/[ \n]/).filter(Boolean);
+
+  if (options.reverse) {
+    words.reverse();
+  }
+
+  return words;
+};
 
 export class MainApp extends LitElement {
   static properties = {
     mode: { type: String },
     text: { type: String },
+    options: { reverse: { type: Boolean } },
+
     currentWord: { type: Number },
     nextWord: { type: Function },
     prevWord: { type: Function },
@@ -26,12 +36,16 @@ export class MainApp extends LitElement {
 
   constructor() {
     super();
+
     this.mode = Mode.INPUT;
     this.text = sampleText;
+    this.options = { reverse: false };
+
+    this.toggleReverse = () => (this.options.reverse = !this.options.reverse);
 
     this.currentWord = 0;
     this.nextWord = () => {
-      if (this.currentWord + 1 < textToWords(this.text).length) {
+      if (this.currentWord + 1 < textToWords(this.text, this.options).length) {
         this.currentWord = this.currentWord + 1;
       }
       return;
@@ -65,7 +79,7 @@ export class MainApp extends LitElement {
     if (this.mode === Mode.READ) {
       return html`
         <text-stepper
-          .currentWord=${textToWords(this.text)[this.currentWord]}
+          .currentWord=${textToWords(this.text, this.options)[this.currentWord]}
           .nextWord=${this.nextWord}
           .prevWord=${this.prevWord}
           .enterInputMode=${this.enterInputMode}
@@ -77,7 +91,7 @@ export class MainApp extends LitElement {
         <h2>Textstepper</h2>
         <h1>Step through your text one word at a time</h1>
       </div>
-      <div class="main-card" id="main-card">
+      <div class="main-card">
         <textarea
           id="text-area"
           @input="${(x) => (this.text = x.target.value)}"
@@ -85,6 +99,17 @@ export class MainApp extends LitElement {
 ${this.text}</textarea
         >
         <div class="control-panel">
+          <div>
+            <h3>Options</h3>
+          <label
+            ><input
+              type="checkbox"
+              name="checkbox"
+              .checked=${this.options.reverse}
+              @click=${this.toggleReverse}
+            />Read backwards</label
+          >
+          </div>
           <button
             class="generic-btn generic-btn--start"
             @click="${this.enterReadMode}"

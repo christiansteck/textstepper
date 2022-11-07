@@ -4,14 +4,18 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(255, 255, 255, 0.87);
   font-family: Roboto, Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
 
+h3 {
+  margin-top: 0;
+}
+
 .title {
-  margin-top: 15vh;
+  margin: 15vh 20px 0;
   font-size: x-large;
   color: #eceff1;
   text-align: center;
@@ -19,6 +23,7 @@ body {
 
 .main-card {
   display: flex;
+  gap: 16px;
   max-width: 720px;
   margin: 15vh auto 0;
   background: rgba(0, 0, 0, 0.2);
@@ -33,9 +38,9 @@ body {
 
 .control-panel {
   display: flex;
-  align-items: end;
   flex-grow: 1;
-  justify-content: flex-end;
+  justify-content: space-between;
+  flex-direction: column;
 }
 
 .generic-btn {
@@ -55,6 +60,7 @@ body {
 }
 
 .generic-btn--start {
+  align-self: flex-end;
   border: 3px solid white;
 }
 
@@ -62,7 +68,7 @@ body {
   position: absolute;
   top: 10px;
   right: 10px;
-  border: 1px solid white;
+  border: none;
   width: 50px;
 }
 
