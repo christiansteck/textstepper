@@ -85,3 +85,9 @@ h3 {
   font-size: 56px;
   color: white;
 }
+
+.progress {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}

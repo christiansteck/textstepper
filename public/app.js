@@ -79,7 +79,8 @@ export class MainApp extends LitElement {
     if (this.mode === Mode.READ) {
       return html`
         <text-stepper
-          .currentWord=${textToWords(this.text, this.options)[this.currentWord]}
+          .words=${textToWords(this.text, this.options)}
+          .currentWord=${this.currentWord}
           .nextWord=${this.nextWord}
           .prevWord=${this.prevWord}
           .enterInputMode=${this.enterInputMode}
@@ -101,14 +102,14 @@ ${this.text}</textarea
         <div class="control-panel">
           <div>
             <h3>Options</h3>
-          <label
-            ><input
-              type="checkbox"
-              name="checkbox"
-              .checked=${this.options.reverse}
-              @click=${this.toggleReverse}
-            />Read backwards</label
-          >
+            <label
+              ><input
+                type="checkbox"
+                name="checkbox"
+                .checked=${this.options.reverse}
+                @click=${this.toggleReverse}
+              />Read backwards</label
+            >
           </div>
           <button
             class="generic-btn generic-btn--start"
@@ -124,7 +125,8 @@ customElements.define("main-app", MainApp);
 
 export class TextStepper extends LitElement {
   static properties = {
-    currentWord: { type: String },
+    words: { type: Array },
+    currentWord: { type: Number },
     nextWord: { type: Function },
     prevWord: { type: Function },
     enterInputMode: { type: Function },
@@ -169,7 +171,11 @@ export class TextStepper extends LitElement {
           }
         }}
       >
-        ${this.currentWord}
+        ${this.words[this.currentWord]}
+      </div>
+      <div class="progress">
+        ${this.currentWord + 1}/${this.words.length}
+        (${Math.round((100 * (this.currentWord + 1)) / this.words.length)}%)
       </div>
       <button
         class="generic-btn generic-btn--escape"
